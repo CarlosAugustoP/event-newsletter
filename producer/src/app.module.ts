@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { OrdersModule } from './orders/orders.module';
+import { OrdersModule } from './orders/concert.module';
 
 @Module({
   imports: [
