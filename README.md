@@ -1,0 +1,1 @@
+This project is a RESTful API for managing various types of concerts and events. It utilizes RabbitMQ for message-based communication between different parts of the system, allowing the publishing and processing of event-related messages such as concert ticket orders.
