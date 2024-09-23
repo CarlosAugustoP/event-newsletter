@@ -6,11 +6,10 @@ import { ConcertDTO } from './concert.dto';
 @Controller('orders')
 export class ConcertsController {
   constructor(private readonly concertsService: ConcertsService) {
-
     
 }
   @Post('place-concert')
-    placeOrder(@Body() order: ConcertDTO) {
+    placeConcert(@Body() order: ConcertDTO) {
         return this.concertsService.placeConcert(order);
 
   }

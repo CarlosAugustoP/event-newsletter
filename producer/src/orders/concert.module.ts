@@ -2,15 +2,16 @@ import { Module } from '@nestjs/common';
 import { ConcertsService } from './concert.service';
 import { ConcertsController } from './concert.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+
 @Module({
-  imports : [
+  imports: [
     ClientsModule.register([
       {
         name: 'CONCERTS_SERVICE',
         transport: Transport.RMQ,
         options: {
           urls: ['amqp://localhost:5672'],
-          queue: 'concerts_queue',
+          queue: 'concerts_queue', // Nome da fila
           queueOptions: {
             durable: false,
           },
