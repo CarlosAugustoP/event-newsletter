@@ -7,11 +7,77 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
   imports: [
     ClientsModule.register([
       {
-        name: 'CONCERTS_SERVICE',
+        name: 'ROCK_CONCERTS_SERVICE',
         transport: Transport.RMQ,
         options: {
           urls: ['amqp://localhost:5672'],
-          queue: 'concerts_queue', // Nome da fila
+          queue: 'rock_concerts_queue',
+          queueOptions: {
+            durable: false,
+          },
+        },
+      },
+      {
+        name: 'POP_CONCERTS_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://localhost:5672'],
+          queue: 'pop_concerts_queue',
+          queueOptions: {
+            durable: false,
+          },
+        },
+      },
+      {
+        name: 'RAP_CONCERTS_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://localhost:5672'],
+          queue: 'rap_concerts_queue',
+          queueOptions: {
+            durable: false,
+          },
+        },
+      },
+      {
+        name: 'CULTURE_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://localhost:5672'],
+          queue: 'culture_queue',
+          queueOptions: {
+            durable: false,
+          },
+        },
+      },
+      {
+        name: 'CONVENTION_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://localhost:5672'],
+          queue: 'convention_queue',
+          queueOptions: {
+            durable: false,
+          },
+        },
+      },
+      {
+        name: 'SERTANEJO_CONCERTS_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://localhost:5672'],
+          queue: 'sertanejo_concerts_queue',
+          queueOptions: {
+            durable: false,
+          },
+        },
+      },
+      {
+        name: 'CONFERENCE_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://localhost:5672'],
+          queue: 'conference_queue',
           queueOptions: {
             durable: false,
           },

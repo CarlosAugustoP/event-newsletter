@@ -1,12 +1,11 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { ConcertDTO } from './concert.dto';
+import { EventDTO } from './concert.dto';
 import * as amqp from 'amqplib';
 
 @Injectable()
 export class ConcertsService implements OnModuleInit {
-  private readonly exchangeName = 'concerts_headers_exchange';
-  private readonly queueName = 'concerts_queue';
 
+  // Estabilishes connection to rabbit, AMQP enables apps to connect to brokers.
   private connection: amqp.Connection;
   private channel: amqp.Channel;
 
@@ -14,18 +13,60 @@ export class ConcertsService implements OnModuleInit {
     await this.setupRabbitMQ();
   }
 
+  // Initial config  
   private async setupRabbitMQ() {
     try {
       this.connection = await amqp.connect('amqp://localhost:5672');
       this.channel = await this.connection.createChannel();
 
-      await this.channel.assertExchange(this.exchangeName, 'headers', { durable: true });
-
-      await this.channel.assertQueue(this.queueName, { durable: false });
-      await this.channel.bindQueue(this.queueName, this.exchangeName, '', {
+      // Creating the exchange 'concert_headers_exchange' with type 'headers' then binding it to the queue 'rock_concerts_queue' with the header 'genre' set to 'rock'
+      await this.channel.assertExchange('concert_headers_exchange', 'headers', { durable: true });
+      await this.channel.assertQueue('rock_concerts_queue', { durable: false });
+      await this.channel.bindQueue('rock_concerts_queue', 'concert_headers_exchange', '', {
         'x-match': 'all',
         'genre': 'rock',
-        'location': 'stadium',
+      });
+
+      await this.channel.assertExchange('culture_headers_exchange', 'headers', { durable: true });
+      await this.channel.assertQueue('culture_queue', { durable: false });
+      await this.channel.bindQueue('culture_queue', 'culture_headers_exchange', '', {
+        'x-match': 'all',
+        'genre': 'culture',
+      });
+
+      await this.channel.assertExchange('convention_headers_exchange', 'headers', { durable: true });
+      await this.channel.assertQueue('convention_queue', { durable: false });
+      await this.channel.bindQueue('convention_queue', 'convention_headers_exchange', '', {
+        'x-match': 'all',
+        'genre': 'convention',
+      });
+
+      await this.channel.assertExchange('sertanejo_concert_headers_exchange', 'headers', { durable: true });
+      await this.channel.assertQueue('sertanejo_concert_queue', { durable: false });
+      await this.channel.bindQueue('sertanejo_concert_queue', 'sertanejo_concert_headers_exchange', '', {
+        'x-match': 'all',
+        'genre': 'sertanejo',
+      });
+
+      await this.channel.assertExchange('pop_concert_headers_exchange', 'headers', { durable: true });
+      await this.channel.assertQueue('pop_concert_queue', { durable: false });
+      await this.channel.bindQueue('pop_concert_queue', 'pop_concert_headers_exchange', '', {
+        'x-match': 'all',
+        'genre': 'pop',
+      });
+
+      await this.channel.assertExchange('rap_concert_headers_exchange', 'headers', { durable: true });
+      await this.channel.assertQueue('rap_concert_queue', { durable: false });
+      await this.channel.bindQueue('rap_concert_queue', 'rap_concert_headers_exchange', '', {
+        'x-match': 'all',
+        'genre': 'rap',
+      });
+
+      await this.channel.assertExchange('conference_headers_exchange', 'headers', { durable: true });
+      await this.channel.assertQueue('conference_queue', { durable: false });
+      await this.channel.bindQueue('conference_queue', 'conference_headers_exchange', '', {
+        'x-match': 'all',
+        'genre': 'conference',
       });
 
       console.log('RabbitMQ configuration complete.');
@@ -34,24 +75,25 @@ export class ConcertsService implements OnModuleInit {
     }
   }
 
-  async placeConcert(order: ConcertDTO) {
+  async placeEvent(order: EventDTO, exchangeName: string, headers: { [key: string]: string }) {
     try {
       this.channel.publish(
-        this.exchangeName,
+        exchangeName,
         '',
         Buffer.from(JSON.stringify(order)),
         {
-          headers: { genre: 'rock', location: 'stadium' }, 
+          headers, 
           persistent: true,
         },
       );
-      console.log('Concert message sent successfully.');
-      return { message: 'concert created successfully!' };
+      console.log('message sent successfully.');
+      return { message: 'Event created successfully!' };
     } catch (error) {
       console.error('Error sending message to RabbitMQ:', error);
       throw error;
     }
   }
+
 
   async onModuleDestroy() {
     if (this.channel) {
