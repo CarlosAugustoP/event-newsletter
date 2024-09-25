@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ConcertDTO {
     private String name;
+    private int quantity;
     private String description;
     private double price;
-    private int quantity;
     private String date;
 
     public String getName() {
