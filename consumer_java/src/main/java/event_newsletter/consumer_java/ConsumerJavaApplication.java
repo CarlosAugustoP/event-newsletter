@@ -1,6 +1,8 @@
 package event_newsletter.consumer_java;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -29,7 +31,7 @@ public class ConsumerJavaApplication {
 
     static final String headersExchangeName = "concert_headers_exchange";
     
-    public static String chosenQueue = null;
+    public static List<String> chosenQueues = new ArrayList<>();
 
     @Bean
     Queue rockQueue() {
@@ -131,14 +133,16 @@ public class ConsumerJavaApplication {
         MessageListenerAdapter listenerAdapter = context.getBean(MessageListenerAdapter.class);
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(chosenQueue);
+
+        // Configura o consumidor para escutar todas as filas selecionadas
+        container.setQueueNames(chosenQueues.toArray(new String[0]));
         container.setMessageListener(listenerAdapter);
         container.start();
     }
 
     private static void runMenu() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("What Kinds of Concert Would You Like to Watch:");
+        System.out.println("Escolha os tipos de eventos que você quer escutar (separados por vírgula):");
         System.out.println("1 - Rock");
         System.out.println("2 - Culture");
         System.out.println("3 - Convention");
@@ -146,21 +150,21 @@ public class ConsumerJavaApplication {
         System.out.println("5 - Pop");
         System.out.println("6 - Rap");
         System.out.println("7 - Conference");
-    
-        int tipo = scanner.nextInt();
-        String queueName = getQueueNameByType(tipo);
-    
-        if (queueName != null) {
-            // System.out.println("Você escolheu o tipo de evento: " + tipo + " - Fila correspondente: " + queueName);
-            chosenQueue = queueName;
-        } 
-        
-        else {
-            System.out.println("Opção inválida!");
+
+        String input = scanner.nextLine();
+        String[] tipos = input.split(",");
+
+        for (String tipo : tipos) {
+            String queueName = getQueueNameByType(Integer.parseInt(tipo.trim()));
+            if (queueName != null) {
+                chosenQueues.add(queueName);
+            } else {
+                System.out.println("Opção inválida: " + tipo);
+            }
         }
-        
+
         scanner.close();
-    }    
+    }
 
     public static String getQueueNameByType(int tipo) {
         switch (tipo) {
