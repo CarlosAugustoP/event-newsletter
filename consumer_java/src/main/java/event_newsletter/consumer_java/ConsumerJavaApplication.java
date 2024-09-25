@@ -142,7 +142,7 @@ public class ConsumerJavaApplication {
 
     private static void runMenu() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Escolha os tipos de eventos que você quer escutar (separados por vírgula):");
+        System.out.println("Choose the types of events you want to listen to (separated by commas):");
         System.out.println("1 - Rock");
         System.out.println("2 - Culture");
         System.out.println("3 - Convention");
@@ -158,8 +158,9 @@ public class ConsumerJavaApplication {
             String queueName = getQueueNameByType(Integer.parseInt(tipo.trim()));
             if (queueName != null) {
                 chosenQueues.add(queueName);
-            } else {
-                System.out.println("Opção inválida: " + tipo);
+            } 
+            else {
+                System.out.println("Invalid Option: " + tipo);
             }
         }
 

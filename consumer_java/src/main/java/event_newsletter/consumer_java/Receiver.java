@@ -17,22 +17,20 @@ public class Receiver {
     public void receiveMessage(byte[] message) {
         try {
             String messageString = new String(message);
-            // System.out.println("Mensagem recebida: " + messageString);
+            // System.out.println("Received Message: " + messageString);
 
             ConcertDTO concert = objectMapper.readValue(message, ConcertDTO.class);
 
             if (concert != null) {
                 String newsletterMessage = String.format(
-                    "\n🎵 **Concert Announcement!** 🎵\n\n" +
-                    "**Event Name:** %s\n" +
-                    "**Description:** %s\n\n" +
-                    "**Ticket Information:**\n" +
-                    "- **Price:** $%.2f\n" +
-                    "- **Available Tickets:** %d\n\n" +
-                    "**Event Date:**\n" +
-                    "📅 %s\n\n" +
-                    "Get your tickets now and enjoy an unforgettable experience!\n\n" +
-                    "Stay tuned for more updates!",
+                    "\n\t - - - Event Announcement - - - \n\n" +
+                    "Event Name: %s\n" +
+                    "Description: %s\n\n" +
+                    "Ticket Information:\n" +
+                    "- Price: $%.2f\n" +
+                    "- Available Tickets: %d\n\n" +
+                    "Event Date:\n" +
+                    "- %s\n",
                     concert.getName(),
                     concert.getDescription(),
                     concert.getPrice(),
