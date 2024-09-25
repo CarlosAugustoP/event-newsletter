@@ -16,14 +16,25 @@ public class Receiver {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    @RabbitListener(queues = "concerts_queue")
+    // Método genérico para receber mensagens de diferentes filas
+    @RabbitListener(queues = {
+        "concert_queue", 
+        "culture_queue", 
+        "convention_queue", 
+        "sertanejo_queue", 
+        "pop_queue", 
+        "rap_queue", 
+        "conference_queue"
+    })
     public void receiveMessage(byte[] message) {
         try {
+            String messageString = new String(message);
+            System.out.println("Mensagem recebida: " + messageString);
             JsonNode jsonNode = objectMapper.readTree(message);
             JsonNode concertData = jsonNode.get("data");
-    
+
             ConcertDTO concert = objectMapper.treeToValue(concertData, ConcertDTO.class);
-    
+
             String newsletterMessage = String.format(
                 "🎵 **Concert Announcement!** 🎵\n\n" +
                 "**Event Name:** %s\n" +
@@ -41,12 +52,34 @@ public class Receiver {
                 concert.getQuantity(),
                 concert.getDate()
             );
-    
+
             System.out.println(newsletterMessage);
 
         } catch (Exception e) {
             System.err.println("Failed to process message: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    // Este método não é necessário para o RabbitListener, mas pode ser útil em outros contextos
+    public String getQueueNameByType(int tipo) {
+        switch (tipo) {
+            case 1:
+                return "concert_queue";
+            case 2:
+                return "culture_queue";
+            case 3:
+                return "convention_queue";
+            case 4:
+                return "sertanejo_queue";
+            case 5:
+                return "pop_queue";
+            case 6:
+                return "rap_queue";
+            case 7:
+                return "conference_queue";
+            default:
+                return null;
         }
     }
 }
