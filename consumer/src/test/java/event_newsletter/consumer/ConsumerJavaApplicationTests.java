@@ -1,4 +1,4 @@
-package event_newsletter.consumer_java;
+package event_newsletter.consumer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

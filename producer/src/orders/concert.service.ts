@@ -5,7 +5,6 @@ import * as amqp from 'amqplib';
 @Injectable()
 export class ConcertsService implements OnModuleInit {
 
-  // Estabilishes connection to rabbit, AMQP enables apps to connect to brokers.
   private connection: amqp.Connection;
   private channel: amqp.Channel;
 
@@ -13,13 +12,11 @@ export class ConcertsService implements OnModuleInit {
     await this.setupRabbitMQ();
   }
 
-  // Initial config  
   private async setupRabbitMQ() {
     try {
       this.connection = await amqp.connect('amqp://localhost:5672');
       this.channel = await this.connection.createChannel();
 
-      // Creating the exchange 'concert_headers_exchange' with type 'headers' then binding it to the queue 'rock_concerts_queue' with the header 'genre' set to 'rock'
       await this.channel.assertExchange('concert_headers_exchange', 'headers', { durable: true });
       await this.channel.assertQueue('rock_concerts_queue', { durable: false });
       await this.channel.bindQueue('rock_concerts_queue', 'concert_headers_exchange', '', {
@@ -93,7 +90,6 @@ export class ConcertsService implements OnModuleInit {
       throw error;
     }
   }
-
 
   async onModuleDestroy() {
     if (this.channel) {

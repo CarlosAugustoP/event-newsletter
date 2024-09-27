@@ -1,4 +1,4 @@
-package event_newsletter.consumer_java;
+package event_newsletter.consumer;
 
 import java.util.ArrayList;
 import java.util.HashMap;

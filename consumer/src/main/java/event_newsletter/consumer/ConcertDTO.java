@@ -1,4 +1,4 @@
-package event_newsletter.consumer_java;
+package event_newsletter.consumer;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

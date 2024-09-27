@@ -49,7 +49,4 @@ export class ConcertsController {
 
   }
 
-
-
-
 }

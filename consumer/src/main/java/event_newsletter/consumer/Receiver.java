@@ -1,4 +1,4 @@
-package event_newsletter.consumer_java;
+package event_newsletter.consumer;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;

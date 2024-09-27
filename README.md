@@ -1,40 +1,87 @@
+# Event Ne
+
 This project is a RESTful API for managing various types of concerts and events. It utilizes RabbitMQ for message-based communication between different parts of the system, allowing the publishing and processing of event-related messages such as concert ticket orders.
 
 
-# PREREQUISITES:
-- npm (node)
-- nest js
-- docker
-- rabbitmq
-- postman or insomnia7
-- jdk
-- maven 
+## Tools
+[RabbitMQ]
+[Node.js] with npm
+[NestJS]
+[Docker] (optional, for running RabbitMQ)
+[Postman] or [Insomnia] for API testing
+[Java Development Kit (JDK)]
+[Maven]
 
 
-# GETTING STARTED - PRODUCER
+## Getting Started
 
-1. Order docker to setup a rabbitmq container:
+### RabbitMQ
+Run RabbitMQ as a docker container or install it on your machine:
 
-````bash
+- Docker
+```bash
 docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management
 ````
 
-2. Install nest js:
+- Ubuntu
+
+```bash
+sudo apt install erlang
+sudo apt install rabbitmq-server
+sudo systemctl enable rabbitmq-server
+sudo systemctl start rabbitmq-server
+```
+
+- Dashboard:
+
+URL: `http://localhost:15672`  
+User: `guest`  
+Password: `guest`
+
+
+
+### Node.js and NestJS
+
+- Install Node.js and NestJS:
 
 ````bash
-npm i -g @nestjs/cli
+sudo apt install nodejs npm
+npm install -g @nestjs/cli
 ````
 
-3. Run the producer using the command:
+- Install dependencies:
+```bash
+cd producer
+npm install
+```
 
-````bash
+Run the application:
+```bash
 nest start --watch
 ````
+or
+```bash
+npm run start
+```
 
-4. Begin sending messages through the routes contained in orders/service through insomnia or postman, then access rabbit mq and type "guest" and "guest" for credentials.
+### Java and Maven
+```bash
+sudo apt-get install default-jdk
+sudo apt-get install maven
+```
 
+```bash
+cd consumer
+mvn clean install
+```
+Run the application:
+```bash
+mvn spring-boot:run
+```
+### Insomnia
+Go to the [official website](https://insomnia.rest/) and download the application.
 
-# GETTING STARTED - CONSUMER 
+# Running the App
 
 1. Run the archive "ConsumerJavaApplication.java"
 
