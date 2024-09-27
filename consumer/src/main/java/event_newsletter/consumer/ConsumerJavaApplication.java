@@ -142,7 +142,7 @@ public class ConsumerJavaApplication {
 
     private static void runMenu() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Choose the types of events you want to listen to (separated by commas):");
+        System.out.println("Choose:");
         System.out.println("1 - Rock");
         System.out.println("2 - Culture");
         System.out.println("3 - Convention");

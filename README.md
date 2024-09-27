@@ -1,19 +1,31 @@
-# Event Ne
+# Event Newsletter
 
-This project is a RESTful API for managing various types of concerts and events. It utilizes RabbitMQ for message-based communication between different parts of the system, allowing the publishing and processing of event-related messages such as concert ticket orders.
+This project is part of the course `Fundamentals of Concurrent, Parallel, and Distributed Computing` at [Cesar School](https://cesar.school). It demonstrates a message-based communication system using RabbitMQ with three main components:
 
+- Message Producer (Node.js/NestJS)
+- Message Consumer (Java)
+- Audit Backend (Python)
+
+The system simulates event management, where producers send concert-related data, consumers process the messages, and the audit backend monitors all messages. RabbitMQ enables communication between components via a message exchange model.
 
 ## Tools
-[RabbitMQ]
-[Node.js] with npm
-[NestJS]
-[Docker] (optional, for running RabbitMQ)
-[Postman] or [Insomnia] for API testing
-[Java Development Kit (JDK)]
-[Maven]
+- [RabbitMQ](https://www.rabbitmq.com/)
+- [Docker](https://www.docker.com/) (optional, for running RabbitMQ)
+- [Insomnia](https://insomnia.rest/) or [Postman](https://www.postman.com/)] for API testing
+- [Node.js](https://nodejs.org/) with npm
+- [NestJS](https://nestjs.com/)
+- [Java](https://www.java.com/)
+- [Python](https://www.python.org/)
 
 
 ## Getting Started
+
+### Prerequisites
+Ensure the following tools are installed:
+- RabbitMQ (via Docker or locally)  
+- Node.js and npm  
+- Java Development Kit (JDK) and Maven  
+- Python with virtualenv  
 
 ### RabbitMQ
 Run RabbitMQ as a docker container or install it on your machine:
@@ -29,18 +41,13 @@ docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management
 sudo apt install erlang
 sudo apt install rabbitmq-server
 sudo systemctl enable rabbitmq-server
-sudo systemctl start rabbitmq-server
 ```
 
-- Dashboard:
+### Insomnia
+Go to the [official website](https://insomnia.rest/) and download the application.  
+Alternatively, you can use [Postman](https://www.postman.com/).
 
-URL: `http://localhost:15672`  
-User: `guest`  
-Password: `guest`
-
-
-
-### Node.js and NestJS
+### Setting Up the Producer (Node.js and NestJS)
 
 - Install Node.js and NestJS:
 
@@ -49,54 +56,90 @@ sudo apt install nodejs npm
 npm install -g @nestjs/cli
 ````
 
-- Install dependencies:
+- Install dependencies on the `producer` directory:
 ```bash
 cd producer
 npm install
 ```
 
-Run the application:
-```bash
-nest start --watch
-````
-or
-```bash
-npm run start
-```
+### Setting Up the Consumer (Java and Maven)
 
-### Java and Maven
 ```bash
 sudo apt-get install default-jdk
 sudo apt-get install maven
 ```
+- Install dependencies on the `consumer` directory:
 
 ```bash
 cd consumer
 mvn clean install
 ```
+
+### Setting Up the Audit Backend (Python)
+
+```bash
+cd audit
+python3 -m venv venv
+source venv/bin/activate
+```
+```bash
+pip install -r requirements.txt
+```
+
+## Running the Application
+
+1. Run **RabbitMQ**
+
+```bash
+sudo systemctl start rabbitmq-server
+```
+```
+http://localhost:15672 
+```
+
+User and password: `guest` 
+
+2. Run the **Audit Backend**
+
+```bash
+python3 src/audit.py
+```
+
+3. Run the **Producer**
+
+```bash
+nest start --watch
+```
+In Imsomnia, send a POST request to `http://localhost:{port}/orders/place-{eventType}` 
+
+The **{port}** can be set on `.env `file for each producer instance.
+
+The **{eventType}** can be `rock`, `culture`, `convention`, `sertanejo`, `pop`, `rap` or `conference`.
+
+For example:
+
+`http://localhost:3000/orders/place-rock`
+
+and the following JSON body:
+
+```json
+{
+    "name": "Sample Event",
+    "quantity": 100,
+    "description": "Event Description",
+    "price": 50,
+    "date": "2024-10-30"
+}
+```
+
+1. Run the **Consumer**
+
 Run the application:
 ```bash
 mvn spring-boot:run
 ```
-### Insomnia
-Go to the [official website](https://insomnia.rest/) and download the application.
 
-# Running the App
 
-1. Run the archive "ConsumerJavaApplication.java"
 
-2. Type any of the number options in the menu
+## Team
 
-3. If you wish to choose more than one option, type separated by commas (ex: 1,2,3):
-````bash
-Choose the types of events you want to listen to (separated by commas):
-1 - Rock
-2 - Culture
-3 - Convention
-4 - Sertanejo
-5 - Pop
-6 - Rap
-7 - Conference
-````
-
-4. Once selected the types of events you wish to listen to, the consumer application will start receiving messages from RabbitMQ based on your selections.
