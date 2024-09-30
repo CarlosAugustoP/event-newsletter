@@ -8,6 +8,9 @@ This project is part of the course `Fundamentals of Concurrent, Parallel, and Di
 
 The system simulates event management, where producers send concert-related data, consumers process the messages, and the audit backend monitors all messages. RabbitMQ enables communication between components via a message exchange model.
 
+[video](https://youtu.be/asO_-25EUW8)
+
+ [![https://youtu.be/asO_-25EUW8](https://img.youtube.com/vi/asO_-25EUW8/0.jpg)](https://youtu.be/asO_-25EUW8)
 ## Tools
 - [RabbitMQ](https://www.rabbitmq.com/)
 - [Docker](https://www.docker.com/) (optional, for running RabbitMQ)
@@ -143,3 +146,7 @@ mvn spring-boot:run
 
 ## Team
 
+Carlos Augusto  
+Gabriel Rossiter  
+Matheus Gomes  
+Pedro Coelho  
